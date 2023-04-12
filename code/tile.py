@@ -11,5 +11,6 @@ class Tile(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(50,50)
         self.surface = surface
+        pygame.draw.rect(self.surface, "white", self.hitbox)
     def get_surface(self):
         return self.surface

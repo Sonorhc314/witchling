@@ -1,0 +1,1 @@
+self.visible_sprites, 

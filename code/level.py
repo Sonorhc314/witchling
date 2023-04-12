@@ -21,7 +21,7 @@ class Level:
         layout = {
             'boundary': import_csv_layout('graphics\map\map_border.csv'),
             # 'grass': import_csv_layout('map\map_Grass.csv'),
-            # 'object': import_csv_layout('map\map_Objects.csv'),
+            'object': import_csv_layout('graphics\map\map_house.csv'),
             # 'entity': import_csv_layout('map\map_Entities.csv')
         }
         graphics = {
@@ -42,9 +42,9 @@ class Level:
                         #     #pass 
                         #     Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'grass', choice(graphics['grass']))
                         
-                        # if style =='object':
-                        #     surf = graphics['object'][int(col)]
-                        #     Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'object', surf)
+                        if style =='object':
+                            #surf = graphics['object'][int(col)]
+                            Tile((x,y), [self.obstacle_sprites], 'object')
 
                         # if style =='entity':
                         #     Tile((x,y), [self.visible_sprites, self.pickup_sprites], 'entity', choice(graphics['entity']))
@@ -91,6 +91,9 @@ class YSortCameraGroup(pygame.sprite.Group):
             sprite_size = sprite.image.get_size()
             sprite_size_zoomed = (int(sprite_size[0] * self.zoom_factor), int(sprite_size[1] * self.zoom_factor))
             sprite_image_zoomed = pygame.transform.scale(sprite.image, sprite_size_zoomed)
+            # hitbox_offset = pygame.Rect(sprite.hitbox)     ## hitbox draw
+            # hitbox_offset.topleft=self.offset/2
+            # pygame.draw.rect(self.display_surface, (0, 0, 0), hitbox_offset,  2)
             self.display_surface.blit(sprite_image_zoomed, offset_rect/2)
 
     def set_zoom_factor(self, zoom_factor):

@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = pygame.image.load('graphics\player\down\down_0.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(50,0)
+        self.hitbox = self.rect.inflate(30,0)
         self.direction = pygame.math.Vector2()
         #animations
         self.import_player_assets()
@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.attacking = False
         self.attack_cooldown = 600
         self.attack_time = None
-        self.speed = 10
+        self.speed = 6
         self.frame_index=0
         self.animation_speed = 0.1
         self.obstacle_sprites = obstacle_sprites  # store the obsta
