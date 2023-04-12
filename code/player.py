@@ -1,14 +1,14 @@
 import pygame
 from settings import * 
-from support import import_folder
+from support import *
 from debug import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, obstacle_sprites, pickup_sprites, visible_sprites):
         super().__init__(groups)
-        self.image = pygame.image.load('graphics\player\down\down_0.png').convert_alpha()
+        self.image = my_load('graphics\player\down_idle\down_idle.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(30,0)
+        self.hitbox = self.rect.inflate(0,-10)
         self.direction = pygame.math.Vector2()
         #animations
         self.import_player_assets()
@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.attacking = False
         self.attack_cooldown = 600
         self.attack_time = None
-        self.speed = 6
+        self.speed = 5
         self.frame_index=0
         self.animation_speed = 0.1
         self.obstacle_sprites = obstacle_sprites  # store the obsta
@@ -38,7 +38,6 @@ class Player(pygame.sprite.Sprite):
                            'right_attack':[], 'left_attack':[],'up_attack':[],'down_attack':[]}
         for animation in self.animations.keys():
             self.animations[animation] = import_folder(character_path + animation)
-        print(self.animations)
 
     def get_inventory(self):
         return self.inventory
@@ -99,6 +98,7 @@ class Player(pygame.sprite.Sprite):
         self.hitbox.y += self.direction.y*speed 
         self.collision('vertical')
         self.rect.center = self.hitbox.center
+        #self.rect.center += self.direction*speed 
     
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
@@ -128,7 +128,6 @@ class Player(pygame.sprite.Sprite):
         if direction == 'horizontal':
             for sprite in self.obstacle_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
-                    print("how")
                     if self.direction.x > 0:
                         self.hitbox.right = sprite.hitbox.left
                     if self.direction.x < 0:
@@ -137,7 +136,6 @@ class Player(pygame.sprite.Sprite):
         if direction == 'vertical':
             for sprite in self.obstacle_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
-                    print("ver")
                     if self.direction.y > 0:
                         self.hitbox.bottom = sprite.hitbox.top
                     if self.direction.y < 0:
