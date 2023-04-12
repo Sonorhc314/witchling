@@ -85,7 +85,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         floor_size_zoomed = (int(floor_size[0] * self.zoom_factor), int(floor_size[1] * self.zoom_factor))
         floor_surface_zoomed = pygame.transform.scale(self.floor_surface, floor_size_zoomed)
 
-        self.display_surface.blit(floor_surface_zoomed, floor_offset_pos/2)
+        self.display_surface.blit(floor_surface_zoomed, floor_offset_pos/self.zoom_factor)
         for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
             offset_rect = sprite.rect.topleft - self.offset
             sprite_size = sprite.image.get_size()
@@ -94,7 +94,7 @@ class YSortCameraGroup(pygame.sprite.Group):
             # hitbox_offset = pygame.Rect(sprite.hitbox)     ## hitbox draw
             # hitbox_offset.topleft=self.offset/2
             # pygame.draw.rect(self.display_surface, (0, 0, 0), hitbox_offset,  2)
-            self.display_surface.blit(sprite_image_zoomed, offset_rect/2)
+            self.display_surface.blit(sprite_image_zoomed, offset_rect/self.zoom_factor)
 
     def set_zoom_factor(self, zoom_factor):
         self.zoom_factor = zoom_factor
