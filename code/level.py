@@ -14,20 +14,25 @@ class Level:
         self.obstacle_sprites = pygame.sprite.Group()
         self.pickup_sprites = pygame.sprite.Group()
         self.game_paused = False
+        #----
+        self.scroll_index = [0]
+        self.reading_time = None
+        self.inventory_menu = Inventory_menu(self.scroll_index)
+        self.reading = False
+        self.scroll_cooldown = 300
         self.create_map()
         #inventory
-        self.inventory_menu = Inventory_menu(self.player.get_inventory())
     def create_map(self):
         layout = {
             'boundary': import_csv_layout('graphics\map\map_border.csv'),
             # 'grass': import_csv_layout('map\map_Grass.csv'),
             'object': import_csv_layout('graphics\map\map_house.csv'),
-            # 'entity': import_csv_layout('map\map_Entities.csv')
+            'entity': import_csv_layout('graphics\map\map_items.csv')
         }
         graphics = {
             # 'grass': import_folder('graphics\Grass'),
             # 'object': import_folder('graphics\objects'),
-            # 'entity': import_folder('graphics\monsters\\bamboo\idle')
+            'entity': import_folder('graphics\\test')
         }
         for style, layout in layout.items():
             for row_index, row in enumerate(layout):
@@ -47,12 +52,14 @@ class Level:
                             Tile((x,y), [self.obstacle_sprites], 'object')
 
                         if style =='entity':
+                            #print(graphics['entity'])
+                            #graphics['entity'][0]
                             Tile((x,y), [self.visible_sprites, self.pickup_sprites], 'entity', choice(graphics['entity']))
         #         if col == 'x':
         #             Tile((x, y), [self.visible_sprites, self.obstacle_sprites])
         #         elif col == 'p':
         #             self.player = Player((x, y), [self.visible_sprites], self.obstacle_sprites)
-        self.player = Player((200/16*TILESIZE, 200/16*TILESIZE), [self.visible_sprites], self.obstacle_sprites, 
+        self.player = Player((200/16*TILESIZE, 250/16*TILESIZE), [self.visible_sprites], self.obstacle_sprites, 
                              self.pickup_sprites, self.visible_sprites)
     def inventory_show(self):
         self.game_paused = not self.game_paused
@@ -60,6 +67,17 @@ class Level:
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         if self.game_paused:
+            self.inventory_menu.update_inventory(self.player.get_inventory(), self.scroll_index)
+            keys = pygame.key.get_pressed()
+            current_time = pygame.time.get_ticks()
+            if self.reading:
+                if current_time - self.reading_time >= self.scroll_cooldown:
+                    self.reading=False
+            if keys[pygame.K_SPACE] and not self.reading:
+                self.reading = True
+                self.reading_time = pygame.time.get_ticks()
+                print(self.scroll_index[0])
+                self.scroll_index[0]+=1
             self.inventory_menu.display()
         else:
             self.visible_sprites.update()

@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.pickup_sprites = pickup_sprites
         self.visible_sprites = visible_sprites
         #inventory
-        self.inventory = []
+        self.inventory = {}
         self.picking_up = False
         self.pickup_cooldown = 300
         #self.in_inventory = False
@@ -84,8 +84,12 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_e]:
             for sprite in self.pickup_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
-                    self.inventory.append(sprite.get_surface())
-                    print(sprite.get_surface())
+                    if sprite.get_surface() in self.inventory:
+                        self.inventory[sprite.get_surface()]+=1
+                    else:
+                        self.inventory[sprite.get_surface()] = 1
+                    #self.inventory[sprite] = sprite.get_surface()
+                    #print(sprite.get_surface())
                     self.visible_sprites.remove(sprite)
                     self.pickup_sprites.remove(sprite)
 

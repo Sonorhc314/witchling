@@ -20,7 +20,6 @@ class Game:
                 if event.type ==pygame.KEYDOWN:
                     if event.key == pygame.K_i:
                         self.level.inventory_show()
-
             self.screen.fill('black')
             self.level.run()
             #debug('hello')
