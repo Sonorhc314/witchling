@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.attacking = False
         self.attack_cooldown = 600
         self.attack_time = None
-        self.speed = 5
+        self.speed = 3
         self.frame_index=0
         self.animation_speed = 0.1
         self.obstacle_sprites = obstacle_sprites  # store the obsta
@@ -84,10 +84,10 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_e]:
             for sprite in self.pickup_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
-                    if sprite.get_surface() in self.inventory:
-                        self.inventory[sprite.get_surface()]+=1
+                    if sprite.get_name() in self.inventory:
+                        self.inventory[sprite.get_name()]+=1
                     else:
-                        self.inventory[sprite.get_surface()] = 1
+                        self.inventory[sprite.get_name()] = 1
                     #self.inventory[sprite] = sprite.get_surface()
                     #print(sprite.get_surface())
                     self.visible_sprites.remove(sprite)

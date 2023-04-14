@@ -51,7 +51,7 @@ def chop_text(text):
             space_index = chunk.rfind(',')
             if space_index == -1:
                 space_index = MAX_LENGTH
-            chopped_text[index] = text[:space_index]
+            chopped_text[index] = text[:space_index+1]
             text = text[space_index+1:]
             index+=1
         

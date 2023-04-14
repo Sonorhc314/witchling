@@ -20,6 +20,8 @@ class Level:
         self.inventory_menu = Inventory_menu(self.scroll_index)
         self.reading = False
         self.scroll_cooldown = 300
+        self.flowers = {0: 'sunflowere', 1: 'big sunflower', 2: 'clover', 
+                        3:'bootyflower', 4:'nettle', 5:'soft nettle', 6:'daybloom'}
         self.create_map()
         #inventory
     def create_map(self):
@@ -27,12 +29,14 @@ class Level:
             'boundary': import_csv_layout('graphics\map\map_border.csv'),
             # 'grass': import_csv_layout('map\map_Grass.csv'),
             'object': import_csv_layout('graphics\map\map_house.csv'),
-            'entity': import_csv_layout('graphics\map\map_items.csv')
+            #'entity': import_csv_layout('graphics\map\map_items.csv')
+            'item': import_csv_layout('graphics\map\map_items.csv')
         }
         graphics = {
             # 'grass': import_folder('graphics\Grass'),
             # 'object': import_folder('graphics\objects'),
-            'entity': import_folder('graphics\\test')
+            #'entity': import_folder('graphics\\test')
+            'item': import_folder('graphics\\items\\flowers')
         }
         for style, layout in layout.items():
             for row_index, row in enumerate(layout):
@@ -51,10 +55,12 @@ class Level:
                             #surf = graphics['object'][int(col)]
                             Tile((x,y), [self.obstacle_sprites], 'object')
 
-                        if style =='entity':
+                        if style =='item':
                             #print(graphics['entity'])
                             #graphics['entity'][0]
-                            Tile((x,y), [self.visible_sprites, self.pickup_sprites], 'entity', choice(graphics['entity']))
+                            index = int(col)-176
+                            surf = graphics['item'][index]
+                            Tile((x,y), [self.visible_sprites, self.pickup_sprites], 'item', surf, self.flowers.get(index))
         #         if col == 'x':
         #             Tile((x, y), [self.visible_sprites, self.obstacle_sprites])
         #         elif col == 'p':

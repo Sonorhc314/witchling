@@ -1,1 +1,1 @@
-self.visible_sprites, 
+'black'
