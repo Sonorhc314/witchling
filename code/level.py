@@ -13,8 +13,10 @@ class Level:
         self.visible_sprites = YSortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
         self.pickup_sprites = pygame.sprite.Group()
+        self.portal_sprites = pygame.sprite.Group()
         self.game_paused = False
         #----
+        #inventory
         self.scroll_index = [0]
         self.reading_time = None
         self.inventory_menu = Inventory_menu(self.scroll_index)
@@ -23,13 +25,15 @@ class Level:
         self.flowers = {0: 'sunflowere', 1: 'big sunflower', 2: 'clover', 
                         3:'bootyflower', 4:'nettle', 5:'soft nettle', 6:'daybloom'}
         self.create_map()
-        #inventory
+        #----
+        #portal
+
     def create_map(self):
         layout = {
             'boundary': import_csv_layout('graphics\map\map_border.csv'),
             # 'grass': import_csv_layout('map\map_Grass.csv'),
             'object': import_csv_layout('graphics\map\map_house.csv'),
-            #'entity': import_csv_layout('graphics\map\map_items.csv')
+            'portal': import_csv_layout('graphics\map\map_portal.csv'),
             'item': import_csv_layout('graphics\map\map_items.csv')
         }
         graphics = {
@@ -50,7 +54,10 @@ class Level:
                         if style =='grass':
                             #pass 
                             Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'grass', choice(graphics['grass']))
-                        
+
+                        if style == 'portal':
+                            Tile((x,y), [self.portal_sprites], 'portal')
+
                         if style =='object':
                             #surf = graphics['object'][int(col)]
                             Tile((x,y), [self.obstacle_sprites], 'object')
@@ -66,7 +73,7 @@ class Level:
         #         elif col == 'p':
         #             self.player = Player((x, y), [self.visible_sprites], self.obstacle_sprites)
         self.player = Player((200/16*TILESIZE, 250/16*TILESIZE), [self.visible_sprites], self.obstacle_sprites, 
-                             self.pickup_sprites, self.visible_sprites)
+                             self.pickup_sprites, self.visible_sprites, self.portal_sprites)
     def inventory_show(self):
         self.game_paused = not self.game_paused
         

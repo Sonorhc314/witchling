@@ -4,7 +4,7 @@ from support import *
 from debug import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, obstacle_sprites, pickup_sprites, visible_sprites):
+    def __init__(self, pos, groups, obstacle_sprites, pickup_sprites, visible_sprites, portal_sprites):
         super().__init__(groups)
         self.image = my_load('graphics\player\down_idle\down_idle.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
@@ -30,6 +30,8 @@ class Player(pygame.sprite.Sprite):
         #self.in_inventory = False
         #self.inventory_cooldown = 300
         self.inventory_time = None
+        #portal
+        self.portal_sprites= portal_sprites
 
     def import_player_assets(self):
         character_path = "graphics\player\\"
@@ -67,13 +69,13 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_SPACE] and not self.attacking:
             self.attacking=True
             self.attack_time = pygame.time.get_ticks()
-            print("attack")
+            #print("attack")
         
         #magic
         if keys[pygame.K_1] and not self.attacking:
             self.attacking=True
             self.attack_time = pygame.time.get_ticks()
-            print("magic")
+            #print("magic")
         #inventory
         # if keys[pygame.K_i] and not self.in_inventory:
         #     self.in_inventory=True
@@ -90,9 +92,13 @@ class Player(pygame.sprite.Sprite):
                         self.inventory[sprite.get_name()] = 1
                     #self.inventory[sprite] = sprite.get_surface()
                     #print(sprite.get_surface())
-                    self.visible_sprites.remove(sprite)
-                    self.pickup_sprites.remove(sprite)
-
+                    #sprite.kill()
+                    pygame.sprite.Sprite.kill(sprite)
+        if keys[pygame.K_SPACE]:
+            for sprite in self.portal_sprites:
+                if sprite.hitbox.colliderect(self.hitbox):
+                    print("portal enetered")
+            
     def move(self, speed):
         if self.direction.magnitude()>0:
             self.direction=self.direction.normalize()
@@ -148,6 +154,10 @@ class Player(pygame.sprite.Sprite):
         for sprite in self.pickup_sprites:
             if sprite.hitbox.colliderect(self.hitbox):
                 debug("Pick up using E")
+
+        for sprite in self.portal_sprites:
+            if sprite.hitbox.colliderect(self.hitbox):
+                debug("Enter portal")
 
     def collision_item(self):
         pass

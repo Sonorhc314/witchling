@@ -9,7 +9,7 @@ class Inventory_menu:
         self.display_surface = pygame.display.get_surface()
         self.inventory = inventory
         self.inventory_to_text()
-        self.dialog = dialog.Dialog(f"Let's see what I have...: {self.inventory_text}")
+        self.dialog = dialog.Dialog(f"Let's see what I have...: {self.inventory_text}", "Tiki")
         self.scroll_index=scroll_index
         self.max_length= self.dialog.get_rows_in_text_box()
     def update_inventory(self, new_inventory, new_scroll_index):

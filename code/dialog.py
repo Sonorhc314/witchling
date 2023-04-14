@@ -3,15 +3,17 @@ from settings import *
 from support import *
 
 class Dialog:
-    def __init__(self, scroll_index, text=None):
+    def __init__(self, scroll_index, name, text=None):
         self.display_surface = pygame.display.get_surface()
         self.image_dialogbox = my_load("graphics\Dialog\DialogBoxFaceset.png").convert_alpha()
         self.height = self.image_dialogbox.get_height()
         self.image_faceset = my_load("graphics\player\Faceset.png").convert_alpha()
         self.text = text
         self.font = pygame.font.Font('font\Pixeltype.ttf', 25)
+        self.name_font = pygame.font.Font('font\Pixeltype.ttf', 30)
         self.chopped = chop_text(self.text)
         self.scroll_index=scroll_index
+        self.name=self.name_font.render(name, True, 'white')
 
     def set_text(self,text):
         self.text=text
@@ -25,6 +27,7 @@ class Dialog:
     def display(self):
         self.display_surface.blit(self.image_dialogbox, (0, HEIGHT-self.height))
         self.display_surface.blit(self.image_faceset, (10, HEIGHT-self.height+30))
+        self.display_surface.blit(self.name, (10, HEIGHT-self.height+3))
         # while True:
         heights = [30,50,70]
         for i in range(3):
