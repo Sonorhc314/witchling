@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = my_load('graphics\player\down_idle\down_idle.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
-        self.hitbox = self.rect.inflate(0,-10)
+        self.hitbox = self.rect.inflate(0,-5)
         self.direction = pygame.math.Vector2()
         #animations
         self.import_player_assets()
@@ -26,10 +26,11 @@ class Player(pygame.sprite.Sprite):
         #inventory
         self.inventory = {}
         self.picking_up = False
+        self.picking_up_time = None
         self.pickup_cooldown = 300
         #self.in_inventory = False
         #self.inventory_cooldown = 300
-        self.inventory_time = None
+        # self.inventory_time = None
         #portal
         self.portal_sprites= portal_sprites
 
@@ -83,7 +84,7 @@ class Player(pygame.sprite.Sprite):
         #     print(self.inventory)
 
         #pickup
-        if keys[pygame.K_e]:
+        if keys[pygame.K_e] and not self.picking_up:
             for sprite in self.pickup_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
                     if sprite.get_name() in self.inventory:
@@ -93,6 +94,8 @@ class Player(pygame.sprite.Sprite):
                     #self.inventory[sprite] = sprite.get_surface()
                     #print(sprite.get_surface())
                     #sprite.kill()
+                    self.picking_up=True
+                    self.picking_up_time = pygame.time.get_ticks()
                     pygame.sprite.Sprite.kill(sprite)
         if keys[pygame.K_SPACE]:
             for sprite in self.portal_sprites:

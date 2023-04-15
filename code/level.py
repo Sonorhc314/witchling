@@ -30,16 +30,18 @@ class Level:
 
     def create_map(self):
         layout = {
-            'boundary': import_csv_layout('graphics\map\map_border.csv'),
             # 'grass': import_csv_layout('map\map_Grass.csv'),
-            'object': import_csv_layout('graphics\map\map_house.csv'),
+            'house': import_csv_layout('graphics\map\map_house.csv'),
             'portal': import_csv_layout('graphics\map\map_portal.csv'),
-            'item': import_csv_layout('graphics\map\map_items.csv')
+            'item': import_csv_layout('graphics\map\map_items.csv'),
+            'tree': import_csv_layout('graphics\map\map_forest.csv'),
+            'object': import_csv_layout('graphics\map\map_objects.csv')
         }
         graphics = {
             # 'grass': import_folder('graphics\Grass'),
-            # 'object': import_folder('graphics\objects'),
-            #'entity': import_folder('graphics\\test')
+            'house': import_folder('graphics\house'),
+            'object': import_folder('graphics\object'),
+            'tree': import_folder('graphics\objects\\trees'),
             'item': import_folder('graphics\\items\\flowers')
         }
         for style, layout in layout.items():
@@ -48,31 +50,31 @@ class Level:
                     if col!='-1':
                         x=col_index*TILESIZE
                         y=row_index*TILESIZE
-                        if style == 'boundary':
-                            Tile((x,y), [self.obstacle_sprites], 'invisible')
+                        if style == 'house':
+                            surf = graphics['house'][int(col)]
+                            Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'invisible', surf)
                         
-                        if style =='grass':
+                        if style =='object':
                             #pass 
-                            Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'grass', choice(graphics['grass']))
+                            Tile((x,y), [self.obstacle_sprites], 'object')
 
                         if style == 'portal':
                             Tile((x,y), [self.portal_sprites], 'portal')
 
-                        if style =='object':
-                            #surf = graphics['object'][int(col)]
-                            Tile((x,y), [self.obstacle_sprites], 'object')
+                        if style =='tree':
+                            surf = graphics['tree'][int(col)]
+                            Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'tree', surf)
 
                         if style =='item':
                             #print(graphics['entity'])
                             #graphics['entity'][0]
-                            index = int(col)-176
-                            surf = graphics['item'][index]
-                            Tile((x,y), [self.visible_sprites, self.pickup_sprites], 'item', surf, self.flowers.get(index))
+                            surf = graphics['item'][int(col)]
+                            Tile((x,y), [self.visible_sprites, self.pickup_sprites], 'item', surf, self.flowers.get(int(col)))
         #         if col == 'x':
         #             Tile((x, y), [self.visible_sprites, self.obstacle_sprites])
         #         elif col == 'p':
         #             self.player = Player((x, y), [self.visible_sprites], self.obstacle_sprites)
-        self.player = Player((200/16*TILESIZE, 250/16*TILESIZE), [self.visible_sprites], self.obstacle_sprites, 
+        self.player = Player((550/16*TILESIZE, 450/16*TILESIZE), [self.visible_sprites], self.obstacle_sprites, 
                              self.pickup_sprites, self.visible_sprites, self.portal_sprites)
     def inventory_show(self):
         self.game_paused = not self.game_paused

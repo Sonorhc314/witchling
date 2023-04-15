@@ -1,1 +1,1 @@
-'black'
+self.screen.fill('black')
