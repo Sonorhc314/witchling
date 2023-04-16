@@ -3,6 +3,8 @@ HEIGHT = 480
 FPS = 70
 TILESIZE = 16*2
 
+WITCH_NAME = "Tiki"
+
 
 WORLD_MAP = [
 ['x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x','x'],

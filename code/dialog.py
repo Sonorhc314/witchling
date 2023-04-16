@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 from support import *
+import math
 
 class Dialog:
     def __init__(self, scroll_index, name, text=None):
@@ -12,8 +13,13 @@ class Dialog:
         self.font = pygame.font.Font('font\Pixeltype.ttf', 25)
         self.name_font = pygame.font.Font('font\Pixeltype.ttf', 30)
         self.chopped = chop_text(self.text)
-        self.scroll_index=scroll_index
+        self.scroll_index=[scroll_index]
         self.name=self.name_font.render(name, True, 'white')
+
+        self.reading = False
+        self.reading_time = None
+        self.scroll_cooldown = 300
+        self.max_length= self.get_rows_in_text_box()
 
     def set_text(self,text):
         self.text=text
@@ -23,8 +29,26 @@ class Dialog:
 
     def get_rows_in_text_box(self):
         return len(self.chopped)
+    
+    def update(self):
+        self.max_length= math.ceil(self.get_rows_in_text_box()/3)
+
+        keys = pygame.key.get_pressed()
+        current_time = pygame.time.get_ticks()
+        if self.reading:
+            if current_time - self.reading_time >= self.scroll_cooldown:
+                self.reading=False
+        if keys[pygame.K_SPACE] and not self.reading:
+            self.reading = True
+            self.reading_time = pygame.time.get_ticks()
+            print(self.scroll_index[0])
+            self.scroll_index[0]+=1
+        
+        if  self.scroll_index[0]>=self.max_length:
+            self.scroll_index[0]=0
 
     def display(self):
+        self.update()
         self.display_surface.blit(self.image_dialogbox, (0, HEIGHT-self.height))
         self.display_surface.blit(self.image_faceset, (10, HEIGHT-self.height+30))
         self.display_surface.blit(self.name, (10, HEIGHT-self.height+3))

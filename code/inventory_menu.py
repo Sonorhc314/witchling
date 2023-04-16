@@ -29,7 +29,7 @@ class Inventory_menu:
             self.inventory_text = self.inventory_text[:-1]
         return self.inventory_text
     def display(self):
-        if self.scroll_index[0]>=self.max_length:
-            self.scroll_index[0]=0
+        # if self.scroll_index[0]>=self.max_length:
+        #     self.scroll_index[0]=0
         self.dialog.display()
     
