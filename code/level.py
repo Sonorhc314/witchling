@@ -9,6 +9,7 @@ from inventory_menu import *
 from camera import YSortCameraGroup
 from level1 import Level1
 from level_home import Level_home
+from potionmaker import Potionmaker
 
 class Level:
     def __init__(self):
@@ -29,6 +30,7 @@ class Level:
         self.create_map(self.level_1)
         self.player = Player((550/16*TILESIZE, 450/16*TILESIZE), [self.visible_sprites], self.obstacle_sprites, 
                              self.pickup_sprites, self.visible_sprites, self.entrance_sprites)
+        #self.potion = Potionmaker((550/16*TILESIZE, 450/16*TILESIZE), [self.visible_sprites])
         #----
         #portal
 
@@ -56,17 +58,8 @@ class Level:
             self.visible_sprites.add(self.player)
         if self.game_paused:
             self.inventory_menu.update_inventory(self.player.get_inventory(), self.scroll_index)
-            keys = pygame.key.get_pressed()
-            current_time = pygame.time.get_ticks()
-            if self.reading:
-                if current_time - self.reading_time >= self.scroll_cooldown:
-                    self.reading=False
-            if keys[pygame.K_SPACE] and not self.reading:
-                self.reading = True
-                self.reading_time = pygame.time.get_ticks()
-                print(self.scroll_index[0])
-                self.scroll_index[0]+=1
             self.inventory_menu.display()
+            self.visible_sprites.update()
         else:
             self.visible_sprites.update()
         #debug(self.player.status)
