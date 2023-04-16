@@ -6,6 +6,7 @@ from debug import debug
 from support import *
 from random import choice
 from inventory_menu import *
+from potionmaker import Potionmaker
 
 class Level:
     def __init__(self):
@@ -22,7 +23,7 @@ class Level:
         self.inventory_menu = Inventory_menu(self.scroll_index)
         self.reading = False
         self.scroll_cooldown = 300
-        self.flowers = {0: 'sunflowere', 1: 'big sunflower', 2: 'clover', 
+        self.flowers = {0: 'sunflower', 1: 'big sunflower', 2: 'clover', 
                         3:'bootyflower', 4:'nettle', 5:'soft nettle', 6:'daybloom'}
         self.create_map()
         #----
@@ -76,6 +77,7 @@ class Level:
         #             self.player = Player((x, y), [self.visible_sprites], self.obstacle_sprites)
         self.player = Player((550/16*TILESIZE, 450/16*TILESIZE), [self.visible_sprites], self.obstacle_sprites, 
                              self.pickup_sprites, self.visible_sprites, self.portal_sprites)
+        Potionmaker((600/16*TILESIZE, 450/16*TILESIZE), [self.visible_sprites], self.player)
     def inventory_show(self):
         self.game_paused = not self.game_paused
         
@@ -83,17 +85,8 @@ class Level:
         self.visible_sprites.custom_draw(self.player)
         if self.game_paused:
             self.inventory_menu.update_inventory(self.player.get_inventory(), self.scroll_index)
-            keys = pygame.key.get_pressed()
-            current_time = pygame.time.get_ticks()
-            if self.reading:
-                if current_time - self.reading_time >= self.scroll_cooldown:
-                    self.reading=False
-            if keys[pygame.K_SPACE] and not self.reading:
-                self.reading = True
-                self.reading_time = pygame.time.get_ticks()
-                print(self.scroll_index[0])
-                self.scroll_index[0]+=1
             self.inventory_menu.display()
+            self.visible_sprites.update()
         else:
             self.visible_sprites.update()
         #debug(self.player.status)

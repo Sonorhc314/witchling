@@ -101,6 +101,7 @@ class Player(pygame.sprite.Sprite):
             for sprite in self.portal_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
                     print("portal enetered")
+
             
     def move(self, speed):
         if self.direction.magnitude()>0:
