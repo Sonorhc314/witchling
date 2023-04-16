@@ -4,7 +4,7 @@ from support import *
 from debug import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, obstacle_sprites, pickup_sprites, visible_sprites, portal_sprites):
+    def __init__(self, pos, groups, obstacle_sprites, pickup_sprites, visible_sprites,entrance_sprites, portal_sprites=None):
         super().__init__(groups)
         self.image = my_load('graphics\player\down_idle\down_idle.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
@@ -33,6 +33,8 @@ class Player(pygame.sprite.Sprite):
         # self.inventory_time = None
         #portal
         self.portal_sprites= portal_sprites
+        #door
+        self.entrance_sprites = entrance_sprites
 
     def import_player_assets(self):
         character_path = "graphics\player\\"
@@ -91,9 +93,6 @@ class Player(pygame.sprite.Sprite):
                         self.inventory[sprite.get_name()]+=1
                     else:
                         self.inventory[sprite.get_name()] = 1
-                    #self.inventory[sprite] = sprite.get_surface()
-                    #print(sprite.get_surface())
-                    #sprite.kill()
                     self.picking_up=True
                     self.picking_up_time = pygame.time.get_ticks()
                     pygame.sprite.Sprite.kill(sprite)
@@ -112,6 +111,11 @@ class Player(pygame.sprite.Sprite):
         self.collision('vertical')
         self.rect.center = self.hitbox.center
         #self.rect.center += self.direction*speed 
+
+    # def teleport(self, destination):
+    #     self.hitbox.x = destination[0]
+    #     self.hitbox.y = destination[1]
+    #     self.rect.center = self.hitbox.center
     
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
@@ -154,13 +158,19 @@ class Player(pygame.sprite.Sprite):
                     if self.direction.y < 0:
                         self.hitbox.top = sprite.hitbox.bottom
 
-        for sprite in self.pickup_sprites:
-            if sprite.hitbox.colliderect(self.hitbox):
-                debug("Pick up using E")
+        if self.pickup_sprites is not None:
+            for sprite in self.pickup_sprites:
+                if sprite.hitbox.colliderect(self.hitbox):
+                    debug("Pick up using E")
 
-        for sprite in self.portal_sprites:
-            if sprite.hitbox.colliderect(self.hitbox):
-                debug("Enter portal")
+        if self.portal_sprites is not None:
+            for sprite in self.portal_sprites:
+                if sprite.hitbox.colliderect(self.hitbox):
+                    debug("Enter portal")
+        # if self.entrance_sprites is not None:
+        #     for sprite in self.entrance_sprites:
+        #         if sprite.hitbox.colliderect(self.hitbox):
+        #             debug("home")
 
     def collision_item(self):
         pass
