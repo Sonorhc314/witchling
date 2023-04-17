@@ -27,6 +27,9 @@ class Level:
         self.level_1 = Level1(self.player)
         self.level_home = Level_home(self.player)
         self.create_map(self.level_1)
+        # self.player = Player((550/16*TILESIZE, 450/16*TILESIZE), [self.visible_sprites], self.obstacle_sprites, 
+        #                      self.pickup_sprites, self.visible_sprites, self.entrance_sprites)
+        #self.potion = Potionmaker((550/16*TILESIZE, 450/16*TILESIZE), [self.visible_sprites])
         #----
         #portal
 
