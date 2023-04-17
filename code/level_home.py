@@ -13,6 +13,7 @@ class Level_home:
         self.obstacle_sprites = pygame.sprite.Group()
         self.door_sprites = pygame.sprite.Group()
         self.pickup_sprites = pygame.sprite.Group()
+        self.portal_sprites = pygame.sprite.Group()
         self.flowers = {0: 'sunflowere', 1: 'big sunflower', 2: 'clover', 
                         3:'bootyflower', 4:'nettle', 5:'soft nettle', 6:'daybloom'}
         self.create_tiles()
@@ -25,6 +26,8 @@ class Level_home:
         return self.door_sprites
     def get_pickup_sprites(self):
         return self.pickup_sprites
+    def get_portal_sprites(self):
+        return self.portal_sprites
     def create_tiles(self):
         self.layout = {
             # 'grass': import_csv_layout('map\map_Grass.csv'),
@@ -32,12 +35,13 @@ class Level_home:
             'portal': import_csv_layout('graphics\map_house\map_house_portal.csv'),
             'alchemy': import_csv_layout('graphics\map_house\map_house_alchemy.csv'),
             'object': import_csv_layout('graphics\map_house\map_house_objects.csv'),
-            'entrance': import_csv_layout('graphics\map_house\map_house_house.csv'),
+            'entrance': import_csv_layout('graphics\map_house\map_house_house.csv')
         }
         self.graphics = {
             #'border': import_folder('graphics\Grass'),
-            #'portal': import_folder('graphics\portal'),
-            'object': import_folder('graphics\object')
+            'portal': import_folder('graphics\portal'),
+            'object': import_folder('graphics\object'),
+            'alchemy': import_folder('graphics\\alchemy')
         }
         for style, layout in self.layout.items():
             for row_index, row in enumerate(layout):
@@ -59,9 +63,13 @@ class Level_home:
                                 Tile((x,y), [self.door_sprites], 'invisible')
                         
                         if style == 'alchemy':
-                            self.x_alchemy=x
-                            self.y_alchemy=y
-                            Tile((x,y), [self.visible_sprites], 'invisible')
+                            if int(col)==326:
+                                self.x_alchemy=x
+                                self.y_alchemy=y
+                                print(col)
+                                #print(indexes.get(int(col)))
+                                surf = self.graphics['alchemy'][0]
+                                Tile((x,y), [self.visible_sprites], 'alchemy', surf)
                         
                         if style =='object':
                             #pass 
@@ -71,6 +79,11 @@ class Level_home:
                         if style =='border':
                             #surf = self.graphics['border'][int(col)]
                             Tile((x,y), [self.obstacle_sprites], 'invisible')
+
+                        if style =='portal':
+                            indexes = {1:0,2:1,33:2,34:3,65:4, 66:5, 97:6,98:7}
+                            surf = self.graphics['portal'][indexes[int(col)]]
+                            Tile((x,y), [self.visible_sprites], 'portal', surf)
 
                         # if style =='portal':
                         #     #print(graphics['entity'])

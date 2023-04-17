@@ -12,6 +12,7 @@ class Level1:
         self.obstacle_sprites = pygame.sprite.Group()
         self.door_sprites = pygame.sprite.Group()
         self.pickup_sprites = pygame.sprite.Group()
+        self.portal_sprites = None
         self.flowers = {0: 'sunflowere', 1: 'big sunflower', 2: 'clover', 
                         3:'bootyflower', 4:'nettle', 5:'soft nettle', 6:'daybloom'}
         self.create_tiles()
@@ -23,6 +24,8 @@ class Level1:
         return self.door_sprites
     def get_pickup_sprites(self):
         return self.pickup_sprites
+    def get_portal_sprites(self):
+        return self.portal_sprites
     def create_tiles(self):
         self.layout = {
             # 'grass': import_csv_layout('map\map_Grass.csv'),

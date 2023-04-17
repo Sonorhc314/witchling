@@ -1,1 +1,1 @@
-self.screen.fill('black')
+p

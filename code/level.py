@@ -40,8 +40,10 @@ class Level:
         self.entrance_sprites = current_level.get_door_sprites()
         self.obstacle_sprites = current_level.get_obstacle_sprites()
         self.pickup_sprites = current_level.get_pickup_sprites()
+        self.portal_sprites = current_level.get_portal_sprites()
         self.visible_sprites.add(self.visible_sprites_player)
-        self.player.update_sprites(self.visible_sprites, self.entrance_sprites, self.obstacle_sprites, self.pickup_sprites)
+        self.player.update_sprites(self.visible_sprites, self.entrance_sprites, 
+                                   self.obstacle_sprites, self.pickup_sprites, self.portal_sprites)
     def inventory_show(self):
         self.game_paused = not self.game_paused
         

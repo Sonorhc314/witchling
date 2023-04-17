@@ -97,10 +97,10 @@ class Player(pygame.sprite.Sprite):
                     self.picking_up=True
                     self.picking_up_time = pygame.time.get_ticks()
                     pygame.sprite.Sprite.kill(sprite)
-        if keys[pygame.K_SPACE]:
-            for sprite in self.portal_sprites:
-                if sprite.hitbox.colliderect(self.hitbox):
-                    print("portal enetered")
+        # if keys[pygame.K_SPACE]:
+        #     for sprite in self.portal_sprites:
+        #         if sprite.hitbox.colliderect(self.hitbox):
+        #             print("portal enetered")
             
     def move(self, speed):
         if self.direction.magnitude()>0:
