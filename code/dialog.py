@@ -26,6 +26,8 @@ class Dialog:
         self.chopped = chop_text(self.text)
     def set_scroll_index(self,scroll_index):
         self.scroll_index = scroll_index
+    def get_scroll_index(self):
+        return self.scroll_index
 
     def get_rows_in_text_box(self):
         return len(self.chopped)

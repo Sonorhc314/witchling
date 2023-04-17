@@ -18,9 +18,12 @@ class Potionmaker(pygame.sprite.Sprite):
             'wind potion' : ['clover', 'soft nettle'],
             'fire potion' : ['big sunflower', 'daybloom']
         }
+        self.ENTER = "                                                  "
 
         self.display_menu_flag = False
         self.interracted_flag = False
+        self.player_choice =None
+        self.craft_time = 0
 
     def update(self): ##-----------------------
         self.input()
@@ -36,6 +39,15 @@ class Potionmaker(pygame.sprite.Sprite):
             self.interracted_flag = True
         elif keys[pygame.K_ESCAPE] or not self.player.hitbox.colliderect(self.hitbox):
             self.interracted_flag = False
+        elif keys[pygame.K_k]:
+            self.player_choice = self.menu.get_scroll_index()
+            self.craft_time = pygame.time.get_ticks()
+        current_time = pygame.time.get_ticks()
+        if self.player_choice is not None:
+            if current_time-self.craft_time > 100:
+                self.player_choice = None
+        debug(self.player_choice)
+
         
 
     
@@ -54,9 +66,11 @@ class Potionmaker(pygame.sprite.Sprite):
 
         # show what you can craft
         # menu = dialog.Dialog("Hm, lets see what we can do here..", WITCH_NAME)
-        self.menu.set_text(f"Hm, what should I do?...: {craftable_list}")
+        to_print = "Hm, what should I do?/"
+        to_print+= self.ENTER + self.ENTER + f"{craftable_list}"
+        self.menu.set_text(to_print)
         self.display_menu_flag = True
-
+        
         
 
 
