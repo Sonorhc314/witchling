@@ -6,7 +6,8 @@ from support import *
 from camera import YSortCameraGroup
 
 class Level1:
-    def __init__(self):
+    def __init__(self, player):
+        self.player = player # currently not used
         self.visible_sprites = YSortCameraGroup('graphics/map/map.png')
         self.obstacle_sprites = pygame.sprite.Group()
         self.door_sprites = pygame.sprite.Group()
@@ -50,7 +51,6 @@ class Level1:
                                 #print(int(col))
                                 Tile((x,y), [self.visible_sprites, self.door_sprites], 'invisible', surf, inflate=True)
                             else:
-                                print(int(col))
                                 surf = self.graphics['house'][int(col)]
                                 Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'invisible', surf)
                         

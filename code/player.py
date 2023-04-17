@@ -4,7 +4,8 @@ from support import *
 from debug import *
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, obstacle_sprites, pickup_sprites, visible_sprites,entrance_sprites, portal_sprites=None):
+    def __init__(self, pos, groups, obstacle_sprites=None, pickup_sprites=None, visible_sprites=None,
+                 entrance_sprites=None, portal_sprites=None):
         super().__init__(groups)
         self.image = my_load('graphics\player\down_idle\down_idle.png').convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
@@ -112,11 +113,20 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = self.hitbox.center
         #self.rect.center += self.direction*speed 
 
-    # def teleport(self, destination):
-    #     self.hitbox.x = destination[0]
-    #     self.hitbox.y = destination[1]
-    #     self.rect.center = self.hitbox.center
+    def teleport(self, destination):
+        self.hitbox.x = destination[0]
+        self.hitbox.y = destination[1]
+        self.rect.center = self.hitbox.center
     
+    def update_sprites(self, new_visible, new_entrance, new_obstacle, new_pickup, new_portal=None):
+        self.pickup_sprites = new_pickup
+        self.obstacle_sprites = new_obstacle
+        self.entrance_sprites = new_entrance
+        self.portal_sprites = new_portal
+        self.visible_sprites = new_visible
+        self.groups=self.visible_sprites
+
+
     def get_status(self):
         if self.direction.x == 0 and self.direction.y == 0:
             if not 'idle' in self.status and not 'attack' in self.status:

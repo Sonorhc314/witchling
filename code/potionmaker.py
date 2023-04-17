@@ -53,7 +53,7 @@ class Potionmaker(pygame.sprite.Sprite):
 
         # show what you can craft
         # menu = dialog.Dialog("Hm, lets see what we can do here..", WITCH_NAME)
-        self.menu.set_text(f"Let's see what I have...: {craftable_list}")
+        self.menu.set_text(f"Hm, what should I do?...: {craftable_list}")
         self.display_menu_flag = True
 
         

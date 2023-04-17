@@ -41,7 +41,7 @@ class Dialog:
         if keys[pygame.K_SPACE] and not self.reading:
             self.reading = True
             self.reading_time = pygame.time.get_ticks()
-            print(self.scroll_index[0])
+            #print(self.scroll_index[0])
             self.scroll_index[0]+=1
         
         if  self.scroll_index[0]>=self.max_length:

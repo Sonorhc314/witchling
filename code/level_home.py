@@ -4,9 +4,11 @@ from tile import Tile
 from debug import debug
 from support import *
 from camera import YSortCameraGroup
+from potionmaker import Potionmaker
 
 class Level_home:
-    def __init__(self):
+    def __init__(self, player):
+        self.player = player
         self.visible_sprites = YSortCameraGroup('graphics/map_house/map_house.png')
         self.obstacle_sprites = pygame.sprite.Group()
         self.door_sprites = pygame.sprite.Group()
@@ -14,6 +16,7 @@ class Level_home:
         self.flowers = {0: 'sunflowere', 1: 'big sunflower', 2: 'clover', 
                         3:'bootyflower', 4:'nettle', 5:'soft nettle', 6:'daybloom'}
         self.create_tiles()
+        Potionmaker((self.x_alchemy, self.y_alchemy), [self.visible_sprites], self.player)
     def get_visible_sprites(self):
         return self.visible_sprites
     def get_obstacle_sprites(self):
@@ -25,18 +28,16 @@ class Level_home:
     def create_tiles(self):
         self.layout = {
             # 'grass': import_csv_layout('map\map_Grass.csv'),
-            'house': import_csv_layout('graphics\map\map_house.csv'),
-            'portal': import_csv_layout('graphics\map\map_portal.csv'),
-            'item': import_csv_layout('graphics\map\map_items.csv'),
-            'tree': import_csv_layout('graphics\map\map_forest.csv'),
-            'object': import_csv_layout('graphics\map\map_objects.csv')
+            'border': import_csv_layout('graphics\map_house\\map_house_border.csv'),
+            'portal': import_csv_layout('graphics\map_house\map_house_portal.csv'),
+            'alchemy': import_csv_layout('graphics\map_house\map_house_alchemy.csv'),
+            'object': import_csv_layout('graphics\map_house\map_house_objects.csv'),
+            'entrance': import_csv_layout('graphics\map_house\map_house_house.csv'),
         }
         self.graphics = {
-            # 'grass': import_folder('graphics\Grass'),
-            'house': import_folder('graphics\house'),
-            'object': import_folder('graphics\object'),
-            'tree': import_folder('graphics\objects\\trees'),
-            'item': import_folder('graphics\\items\\flowers')
+            #'border': import_folder('graphics\Grass'),
+            #'portal': import_folder('graphics\portal'),
+            'object': import_folder('graphics\object')
         }
         for style, layout in self.layout.items():
             for row_index, row in enumerate(layout):
@@ -44,27 +45,36 @@ class Level_home:
                     if col!='-1':
                         x=col_index*TILESIZE
                         y=row_index*TILESIZE
-                        if style == 'house': #21,22,25,26
-                            surf = self.graphics['house'][int(col)]
-                            if int(col) in [25,26]:
-                                #print(int(col))
-                                Tile((x,y), [self.visible_sprites, self.door_sprites], 'invisible', surf, inflate=True)
-                            else:
-                                print(int(col))
-                                surf = self.graphics['house'][int(col)]
-                                Tile((x,y), [self.visible_sprites], 'invisible', surf)
+                        # if style == 'house': #21,22,25,26
+                        #     surf = self.graphics['house'][int(col)]
+                        #     if int(col) in [25,26]:
+                        #         #print(int(col))
+                        #         Tile((x,y), [self.visible_sprites, self.door_sprites], 'invisible', surf, inflate=True)
+                        #     else:
+                        #         print(int(col))
+                        #         surf = self.graphics['house'][int(col)]
+                        #         Tile((x,y), [self.visible_sprites], 'invisible', surf)
+                        if style == 'entrance':
+                            if int(col) in [505,506,507]:
+                                Tile((x,y), [self.door_sprites], 'invisible')
+                        
+                        if style == 'alchemy':
+                            self.x_alchemy=x
+                            self.y_alchemy=y
+                            Tile((x,y), [self.visible_sprites], 'invisible')
                         
                         if style =='object':
                             #pass 
-                            Tile((x,y), [], 'object')
+                            #print(col)
+                            Tile((x,y), [self.obstacle_sprites], 'invisible')
 
-                        if style =='tree':
-                            surf = self.graphics['tree'][int(col)]
-                            Tile((x,y), [self.visible_sprites], 'tree', surf)
+                        if style =='border':
+                            #surf = self.graphics['border'][int(col)]
+                            Tile((x,y), [self.obstacle_sprites], 'invisible')
 
-                        if style =='item':
-                            #print(graphics['entity'])
-                            #graphics['entity'][0]
-                            surf = self.graphics['item'][int(col)]
-                            Tile((x,y), [self.visible_sprites, self.pickup_sprites], 'item', surf, name=self.flowers.get(int(col)))
+                        # if style =='portal':
+                        #     #print(graphics['entity'])
+                        #     #graphics['entity'][0]
+                        #     #surf = self.graphics['item'][int(col)]
+                        #     Tile((x,y), [self.visible_sprites, self.pickup_sprites], 'item', surf, name=self.flowers.get(int(col)))
     

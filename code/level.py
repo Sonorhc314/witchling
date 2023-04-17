@@ -1,12 +1,10 @@
 import pygame
 from settings import * 
-from tile import Tile
 from player import Player
 from debug import debug
 from support import *
 from random import choice
 from inventory_menu import *
-from camera import YSortCameraGroup
 from level1 import Level1
 from level_home import Level_home
 from potionmaker import Potionmaker
@@ -14,7 +12,7 @@ from potionmaker import Potionmaker
 class Level:
     def __init__(self):
         self.display_surface = pygame.display.get_surface()
-        self.door_sprites = pygame.sprite.Group()
+        self.visible_sprites_player = pygame.sprite.Group()
         self.game_paused = False
         #----
         #inventory
@@ -25,21 +23,22 @@ class Level:
         self.scroll_cooldown = 300
         self.flowers = {0: 'sunflowere', 1: 'big sunflower', 2: 'clover', 
                         3:'bootyflower', 4:'nettle', 5:'soft nettle', 6:'daybloom'}
-        self.level_1 = Level1()
-        self.level_home = Level_home()
+        self.player = Player((550/16*TILESIZE, 450/16*TILESIZE), [self.visible_sprites_player])
+        self.level_1 = Level1(self.player)
+        self.level_home = Level_home(self.player)
         self.create_map(self.level_1)
-        self.player = Player((550/16*TILESIZE, 450/16*TILESIZE), [self.visible_sprites], self.obstacle_sprites, 
-                             self.pickup_sprites, self.visible_sprites, self.entrance_sprites)
-        #self.potion = Potionmaker((550/16*TILESIZE, 450/16*TILESIZE), [self.visible_sprites])
         #----
         #portal
 
     def create_map(self, current_level):
-        # current_level=Level1()
+        #current_level=Level1()
+        self.current_level = current_level
         self.visible_sprites = current_level.get_visible_sprites()
         self.entrance_sprites = current_level.get_door_sprites()
         self.obstacle_sprites = current_level.get_obstacle_sprites()
         self.pickup_sprites = current_level.get_pickup_sprites()
+        self.visible_sprites.add(self.visible_sprites_player)
+        self.player.update_sprites(self.visible_sprites, self.entrance_sprites, self.obstacle_sprites, self.pickup_sprites)
     def inventory_show(self):
         self.game_paused = not self.game_paused
         
@@ -54,12 +53,17 @@ class Level:
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         if self.entrance_collision() is True:
-            self.create_map(self.level_home)
-            self.visible_sprites.add(self.player)
+            if(self.current_level==self.level_1):
+                self.create_map(self.level_home)
+                self.player.teleport((750,950))
+                self.visible_sprites.add(self.player)
+            elif(self.current_level==self.level_home):
+                self.create_map(self.level_1)
+                self.player.teleport((950, 900))
+                self.visible_sprites.add(self.player)
         if self.game_paused:
             self.inventory_menu.update_inventory(self.player.get_inventory(), self.scroll_index)
             self.inventory_menu.display()
             self.visible_sprites.update()
         else:
             self.visible_sprites.update()
-        #debug(self.player.status)
