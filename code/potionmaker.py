@@ -15,7 +15,7 @@ class Potionmaker(pygame.sprite.Sprite):
         self.player = player
         self.couldron = []
         self.potion_list = {
-            'wind potion' : ['clover', 'soft nettle'],
+            'wind potion' : ['clover', 'soft nettle', 'soft nettle'],
             # 'fire potion' : ['big sunflower', 'daybloom']
             'fire potion' : ['clover', 'nettle']
         }
@@ -28,6 +28,7 @@ class Potionmaker(pygame.sprite.Sprite):
         self.interracted_flag = False
         self.player_choice =None
         self.craft_time = 0
+        self.just_crafted_flag = False
 
     def update(self): ##-----------------------
         self.input()
@@ -39,6 +40,8 @@ class Potionmaker(pygame.sprite.Sprite):
     
     def input(self):
         keys = pygame.key.get_pressed()
+        if self.player.hitbox.colliderect(self.hitbox) and not self.interracted_flag:
+            debug("Brewing station  [E]")
         if keys[pygame.K_e] and self.player.hitbox.colliderect(self.hitbox):
             self.interracted_flag = True
         elif keys[pygame.K_ESCAPE] or not self.player.hitbox.colliderect(self.hitbox):
@@ -47,6 +50,8 @@ class Potionmaker(pygame.sprite.Sprite):
         elif keys[pygame.K_k] and self.player_choice == None:
             self.player_choice = self.menu.get_scroll_index()[0]
             self.craft_time = pygame.time.get_ticks()
+        elif keys[pygame.K_SPACE] and self.just_crafted_flag == True:
+            self.just_crafted_flag = False
         current_time = pygame.time.get_ticks()
         if self.player_choice is not None:
             if current_time-self.craft_time > 1000:
@@ -75,39 +80,44 @@ class Potionmaker(pygame.sprite.Sprite):
 
         # now craft, duh
         if self.player_choice!=None and self.player_choice!='Blocked' and abs(self.player_choice-1) < len(craftable_list):
-            debug(f"Crafting {craftable_list[self.player_choice-1]}")
+            debug(f"Crafted {craftable_list[self.player_choice-1]}!")
             potion_to_craft = craftable_list[self.player_choice-1]
             for ingredient in self.potion_list[potion_to_craft]:
                 self.player.inventory[ingredient]-=1
                 if self.player.inventory[ingredient] == 0:
                     self.player.inventory.pop(ingredient)
-            if potion in self.player.inventory.keys():
-                self.player.inventory[potion]+=1
+            if potion_to_craft in self.player.inventory.keys():
+                self.player.inventory[potion_to_craft]+=1
             else:
-                self.player.inventory[potion] = 1
+                self.player.inventory[potion_to_craft] = 1
             self.player_choice = 'Blocked'
+            self.just_crafted_flag = True
 
 
 
     
 
     def do_dialog(self, craftable_list):
-        if len(craftable_list)>0:
-            to_print = f"Hm' what should I do?/"
-            while len(to_print)<=55:
-                to_print+=' '
-            to_print+= self.ENTER+self.BOTTOM_TEXT_NO_CRAFT
-            for potion in craftable_list:
-                to_print+=potion
-                for i in range(56-len(potion)):
+        if not self.just_crafted_flag:
+            if len(craftable_list)>0:
+                to_print = f"Hm' what should I do?/"
+                while len(to_print)<=55:
                     to_print+=' '
-                to_print+= self.ENTER+self.BOTTOM_TEXT
-            self.menu.set_text(to_print)
-            self.display_menu_flag = True
+                to_print+= self.ENTER+self.BOTTOM_TEXT_NO_CRAFT
+                for potion in craftable_list:
+                    to_print+=potion
+                    for i in range(56-len(potion)):
+                        to_print+=' '
+                    to_print+= self.ENTER+self.BOTTOM_TEXT
+            else:
+                to_print = f"Uh' I  should  look  for  more  ingredients  rly  soon!"
         else:
-            to_print = f"Uh' I  should  look  for  more  ingredients  rly  soon!"
-            self.menu.set_text(to_print)
-            self.display_menu_flag = True
+            to_print = "Crafted!!"
+            while len(to_print)<=55:
+                    to_print+=' '
+            to_print+= self.ENTER+self.BOTTOM_TEXT_NO_CRAFT
+        self.menu.set_text(to_print)
+        self.display_menu_flag = True
 
         
 
