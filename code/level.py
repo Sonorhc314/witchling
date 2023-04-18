@@ -23,7 +23,7 @@ class Level:
         self.inventory_menu = Inventory_menu(self.scroll_index)
         self.reading = False
         self.scroll_cooldown = 300
-        self.flowers = {0: 'sunflowere', 1: 'big sunflower', 2: 'clover', 
+        self.flowers = {0: 'sunflower', 1: 'big sunflower', 2: 'clover', 
                         3:'bootyflower', 4:'nettle', 5:'soft nettle', 6:'daybloom'}
         self.player = Player((550/16*TILESIZE, 450/16*TILESIZE), [self.visible_sprites_player])
         self.level_1 = Level1(self.player)
