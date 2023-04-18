@@ -9,7 +9,7 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
         self.level = Level()
-        pygame.display.set_caption("Tori's game")
+        pygame.display.set_caption("Brewing potions with Tiki!")
 
     def run(self):
         while True:
