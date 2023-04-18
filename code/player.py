@@ -171,12 +171,12 @@ class Player(pygame.sprite.Sprite):
         if self.pickup_sprites is not None:
             for sprite in self.pickup_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
-                    debug("Pick up using E")
+                    debug("Pick up [E]")
 
         if self.portal_sprites is not None:
             for sprite in self.portal_sprites:
                 if sprite.hitbox.colliderect(self.hitbox):
-                    debug("Enter portal")
+                    debug("Enter portal [E] or submit quest [SPACE]")
         # if self.entrance_sprites is not None:
         #     for sprite in self.entrance_sprites:
         #         if sprite.hitbox.colliderect(self.hitbox):

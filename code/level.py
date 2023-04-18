@@ -80,6 +80,19 @@ class Level:
                 if keys[pygame.K_e]:
                     self.create_map(self.level_2)
                     self.player.teleport((400, 900))
+                if keys[pygame.K_SPACE]:
+                    if self.journal.get_quest_item() in self.player.get_inventory():
+                        self.player.inventory[self.journal.get_quest_item()]-=1
+                        if self.player.inventory[self.journal.get_quest_item()] == 0:
+                            self.player.inventory.pop(self.journal.get_quest_item())
+                        
+                        if 'Gold' in self.player.inventory:
+                            self.player.inventory['Gold']+=self.current_quest*10
+                        else:
+                            self.player.inventory['Gold'] = self.current_quest*10
+
+                        self.current_quest+=1
+                        self.journal.change_quest(self.current_quest)
             else:
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_e]:
@@ -93,7 +106,7 @@ class Level:
             self.journal.update_journal(self.scroll_index)
             self.journal.display()
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_e]:
-                self.journal.change_quest(2)
+            # if keys[pygame.K_e]:
+            #     self.journal.change_quest(2)
         else:
             self.visible_sprites.update()

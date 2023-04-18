@@ -7,12 +7,13 @@ import math
 class Journal:
     def __init__(self, scroll_index, current_quest):
         self.display_surface = pygame.display.get_surface()
-        self.quest1 = '''Quest: Wind potion for Emily. 
-        ~Dear Tiki, I've heard about your potionmaking talent, please create 1 wind potion for me.'''
-        self.quest2 = '''Quest: Shining potion for Wendy. 
-        ~Dear Tiki, The nights are getting dark and scary, I just can't sleep, please create 1 shining potion for me.'''
-        self.quest3 = '''Quest: Fire potion for King Arthur. 
-        ~Dear mighty forest witch, please create 1 fire potion for me so that I can destroy my enemies.'''
+        self.quest_items = {1: 'wind potion', 2: 'shining potion', 3: 'fire potion'}
+        self.quest1 = "Quest: Wind potion for Emily. ~Dear Tiki, "
+        self.quest1 = self.quest1+"I've heard about your potionmaking talent, please create 1 wind potion for me."
+        self.quest2 = "Quest: Shining potion for Wendy. ~Dear Tiki, "
+        self.quest2 = self.quest2 + "The nights are getting dark and scary, I just can't sleep, please create 1 shining potion for me."
+        self.quest3 = "Quest: Fire potion for King Arthur. ~Dear mighty forest witch, " 
+        self.quest3 = self.quest3+"Please create 1 fire potion for me so that I can destroy my enemies."
         self.quests = {1:self.quest1, 2: self.quest2, 3: self.quest3}
         self.current_quest = current_quest
         self.dialog = dialog.Dialog(self.quests[self.current_quest], f"Quest {self.current_quest}", delimiter=' ')
@@ -28,6 +29,8 @@ class Journal:
         self.current_quest = new_quest
         self.current_text = f"Quest {self.current_quest}"
         self.dialog.set_text(self.quests[self.current_quest], self.current_text)
+    def get_quest_item(self):
+        return self.quest_items[self.current_quest]
     def display(self):
         self.dialog.display()
     
