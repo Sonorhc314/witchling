@@ -4,7 +4,7 @@ from support import *
 import math
 
 class Dialog:
-    def __init__(self, scroll_index, name, text=None):
+    def __init__(self, scroll_index, name, text=None, delimiter=','):
         self.display_surface = pygame.display.get_surface()
         self.image_dialogbox = my_load("graphics\Dialog\DialogBoxFaceset.png").convert_alpha()
         self.height = self.image_dialogbox.get_height()
@@ -12,7 +12,7 @@ class Dialog:
         self.text = text
         self.font = pygame.font.Font('font\Pixeltype.ttf', 25)
         self.name_font = pygame.font.Font('font\Pixeltype.ttf', 30)
-        self.chopped = chop_text(self.text)
+        self.chopped = chop_text(self.text, delimiter)
         self.scroll_index=[scroll_index]
         self.name=self.name_font.render(name, True, 'white')
 
@@ -20,10 +20,14 @@ class Dialog:
         self.reading_time = None
         self.scroll_cooldown = 300
         self.max_length= self.get_rows_in_text_box()
+        self.delimiter = delimiter
 
-    def set_text(self,text):
+    def set_text(self,text,new_title=None):
+        if new_title is not None:
+            #print(new_title)
+            self.name=self.name_font.render(new_title, True, 'white')
         self.text=text
-        self.chopped = chop_text(self.text)
+        self.chopped = chop_text(self.text, self.delimiter)
     def set_scroll_index(self,scroll_index):
         self.scroll_index = scroll_index
     def get_scroll_index(self):
@@ -64,7 +68,7 @@ class Dialog:
                 pass
         
 
-def chop_text(text):
+def chop_text(text, delimiter):
     MAX_LENGTH = 55
     chopped_text = {}
     space_index =0
@@ -77,7 +81,7 @@ def chop_text(text):
             break
         else:
             chunk = text[:MAX_LENGTH]
-            space_index = chunk.rfind(',')
+            space_index = chunk.rfind(delimiter)
             if space_index == -1:
                 space_index = MAX_LENGTH
             chopped_text[index] = text[:space_index+1]
