@@ -83,7 +83,7 @@ class Level_home:
                         if style =='portal':
                             indexes = {1:0,2:1,33:2,34:3,65:4, 66:5, 97:6,98:7}
                             surf = self.graphics['portal'][indexes[int(col)]]
-                            Tile((x,y), [self.visible_sprites], 'portal', surf)
+                            Tile((x,y), [self.visible_sprites, self.portal_sprites], 'portal', surf)
 
                         # if style =='portal':
                         #     #print(graphics['entity'])
