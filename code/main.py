@@ -19,7 +19,9 @@ class Game:
                     sys.exit()
                 if event.type ==pygame.KEYDOWN:
                     if event.key == pygame.K_i:
-                        self.level.inventory_show()
+                        self.level.show_this('inventory')
+                    if event.key == pygame.K_j:
+                        self.level.show_this('journal')
             self.screen.fill('black')
             self.level.run()
             #debug('hello')
