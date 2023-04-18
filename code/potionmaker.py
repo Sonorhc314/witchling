@@ -18,8 +18,9 @@ class Potionmaker(pygame.sprite.Sprite):
         self.couldron = []
         self.potion_list = {
             'wind potion' : ['clover', 'soft nettle', 'soft nettle'],
-            # 'fire potion' : ['big sunflower', 'daybloom']
-            'fire potion' : ['clover', 'nettle']
+            'shining potion' : ['sunflower', 'daybloom', 'clover'],
+            'fire potion' : ['bootyflower', 'nettle', 'daybloom', 'clover', 'big sunflower']
+
         }
         self.ENTER = "                                                        "   # ends col:79
         self.BOTTOM_TEXT = "    Craft [K]                       Next [SPACE]        "  # ends col:85

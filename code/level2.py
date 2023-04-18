@@ -13,7 +13,7 @@ class Level2:
         self.door_sprites = pygame.sprite.Group()
         self.pickup_sprites = pygame.sprite.Group()
         self.portal_sprites = pygame.sprite.Group()
-        self.flowers = {0: 'sunflowere', 1: 'big sunflower', 2: 'clover', 
+        self.flowers = {0: 'sunflower', 1: 'big sunflower', 2: 'clover', 
                         3:'bootyflower', 4:'nettle', 5:'soft nettle', 6:'daybloom'}
         self.create_tiles()
     def get_visible_sprites(self):

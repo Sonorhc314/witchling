@@ -23,8 +23,6 @@ class Level:
         self.inventory_menu = Inventory_menu(self.scroll_index)
         self.reading = False
         self.scroll_cooldown = 300
-        self.flowers = {0: 'sunflower', 1: 'big sunflower', 2: 'clover', 
-                        3:'bootyflower', 4:'nettle', 5:'soft nettle', 6:'daybloom'}
         self.player = Player((550/16*TILESIZE, 450/16*TILESIZE), [self.visible_sprites_player])
         self.level_1 = Level1(self.player)
         self.level_2 = Level2(self.player)
@@ -90,8 +88,10 @@ class Level:
                             self.player.inventory['Gold']+=self.current_quest*10
                         else:
                             self.player.inventory['Gold'] = self.current_quest*10
-
-                        self.current_quest+=1
+                        if self.current_quest==3:
+                            self.current_quest=1
+                        else:
+                            self.current_quest+=1
                         self.journal.change_quest(self.current_quest)
             else:
                 keys = pygame.key.get_pressed()
