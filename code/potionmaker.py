@@ -9,7 +9,9 @@ class Potionmaker(pygame.sprite.Sprite):
         super().__init__(groups)
         self.image = my_load('graphics\\alchemy\\326.png').convert_alpha()
         self.rect = self.image.get_rect(topleft = pos)
-        self.hitbox = self.rect.inflate(0,0)
+        self.image.set_alpha(0)
+        self.hitbox = self.rect.inflate(TILESIZE,0)
+        self.hitbox.x += TILESIZE//2
 
         self.menu = dialog.Dialog(0, WITCH_NAME, "Hm, what should I do?")
         self.player = player

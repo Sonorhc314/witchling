@@ -69,7 +69,8 @@ class Level_home:
                                 print(col)
                                 #print(indexes.get(int(col)))
                                 surf = self.graphics['alchemy'][0]
-                                Tile((x,y), [self.visible_sprites], 'alchemy', surf)
+                                Tile((x,y), [self.obstacle_sprites], 'alchemy', surf)
+
                         
                         if style =='object':
                             #pass 

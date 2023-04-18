@@ -10,6 +10,9 @@ class Tile(pygame.sprite.Sprite):
         self.hitbox = self.rect.inflate(0,0)
         if sprite_type == 'item':
             self.hitbox = self.rect.inflate(-15,-15)
+        if sprite_type == 'alchemy':
+            self.hitbox = self.rect.inflate(0,-30)
+            self.hitbox.y-=20
         self.surface = surface
     def get_surface(self):
         return self.surface
